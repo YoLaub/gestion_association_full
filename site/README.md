@@ -1,5 +1,4 @@
 # gestion_association_full
-# **Présentation Synthétique : Application de Gestion pour Associations Sportives**
 
 ## **SIte web**
 
@@ -10,7 +9,6 @@ Ce partie est réservée à la partie front du site internet
 #### Framework : Next.js (pour le SEO et les performances).
 #### Routes : Next.js Router
 #### UI/UX : MUI, Chakra UI ou Tailwind CSS + Framer Motion pour les animations.
-#### CMS : Contentful ou Strapi pour gérer le contenu.
 #### Images : Next.js Image ou Cloudinary.
 #### SEO : Next.js Head ou React Helmet.
 #### Formulaires : React Hook Form + Zod.

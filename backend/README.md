@@ -1,5 +1,4 @@
 # gestion_association_full
-# **Présentation Synthétique : Application de Gestion pour Associations Sportives**
 
 ## **BACKEND**
 
