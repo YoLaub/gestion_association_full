@@ -5,10 +5,6 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
     
-    tools {
-        nodejs 'NodeJS-24.11'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
