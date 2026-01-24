@@ -1,7 +1,6 @@
-import { ClerkProvider } from "@clerk/nextjs";
+// src/app/layout.tsx
 import type { Metadata, Viewport } from "next"; // 1. Importer Viewport
 import "./globals.css";
-import Header from "@/app/components/layout/Header";
 import { BottomNav } from "@/app/components/layout/BottomNav";
 
 // 2. Définir le Viewport SÉPARÉMENT
@@ -13,32 +12,31 @@ export const viewport: Viewport = {
   userScalable: false, // Important pour l'effet "app native"
 };
 
+// 3. Nettoyer Metadata (plus de themeColor ici !)
 export const metadata: Metadata = {
-    title: "Gestion Association",
-    description: "Application de gestion pour associations",
-    manifest: "/manifest.webmanifest",
-    appleWebApp: {
-        capable: true,
-        statusBarStyle: "default",
-        title: "GestAsso",
-    },
+  title: "Gestion Association",
+  description: "Application de gestion pour associations",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "GestAsso",
+  },
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+                                       children,
+                                   }: {
+    children: React.ReactNode;
+}) {
     return (
-       <ClerkProvider>
-         <html lang="fr">
-         <body className="bg-slate-50">
-         <Header/>
-         {children}
+        <html lang="fr">
+        <body className="bg-slate-50">
+        {children}
 
-         <BottomNav/>
-         </body>
-         </html>
-       </ClerkProvider>
+        {/* 2. Ajouter la navigation en bas */}
+        <BottomNav />
+        </body>
+        </html>
     );
-};
+}

@@ -33,7 +33,7 @@ export const StatCard = ({ label, value, trend, color, iconName }: StatCardProps
     };
 
     return (
-        <div className="flex-1 bg-white p-4 rounded-lg shadow-sm border border-slate-100 flex items-center gap-3 min-w-[160px]">
+        <div className="flex-1 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3 min-w-[160px]">
             <div className={`p-3 rounded-xl ${colorClasses[color]}`}>
                 <Icon size={24} />
             </div>
