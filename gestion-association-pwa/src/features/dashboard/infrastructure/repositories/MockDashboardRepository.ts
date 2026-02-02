@@ -8,7 +8,7 @@ export class MockDashboardRepository implements DashboardRepository {
 
         const stats = [
             new DashboardStat("Evenements", "7", "J-5", "blue", "Calendar"),
-            new DashboardStat("Trésorerie", "2 450 €", "+12%", "green", "Euro"),
+            new DashboardStat("Adhérents", "75", "+12%", "green", "User"),
         ];
 
         return new DashboardData(

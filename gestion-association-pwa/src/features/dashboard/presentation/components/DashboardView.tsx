@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-    Plus,
-    Euro,
     Calendar,
     Bell,
     Users,
@@ -23,7 +21,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
     return (
         <main className="min-h-screen bg-slate-50 pb-24 text-slate-900 font-sans">
             {/* Header */}
-            <header className="bg-white px-6 pt-12 pb-6 rounded-b-[2rem] shadow-sm sticky top-0 z-10">
+            <header className="bg-white px-6 pt-12 pb-6 rounded-b-[1rem] shadow-sm sticky top-0 z-10">
                 <div className="flex justify-between items-center">
                     <div>
                         <p className="text-slate-500 text-sm font-medium mb-0.5">Bonjour,</p>
@@ -32,7 +30,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
                     <button className="p-2.5 bg-slate-100 rounded-full text-slate-600 relative">
                         <Bell size={20} />
                         {data.user.hasNotifications && (
-                            <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                            <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-700 rounded-full border border-white"></span>
                         )}
                     </button>
                 </div>
@@ -52,10 +50,10 @@ export function DashboardView({ data }: { data: DashboardData }) {
                         <h2 className="text-lg font-bold text-slate-800">Actions rapides</h2>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        <ActionButton label="Mon Profil" icon={Users} href="/members/add" color="indigo" />
-                        <ActionButton label="Mes Événement" icon={Calendar} href="/events/get" color="emerald" />
-                        <ActionButton label="Ma Boutique" icon={Store} href="/boutique/get" color="emerald" />
-                        <ActionButton label="Mes documents" icon={FileText} href="/documents/get" color="indigo" />
+                        <ActionButton label="Mon Profil" icon={Users} href="/members/add" color="red" />
+                        <ActionButton label="Mes Événement" icon={Calendar} href="/events/get" color="orange" />
+                        <ActionButton label="Ma Boutique" icon={Store} href="/boutique/get" color="orange" />
+                        <ActionButton label="Mes documents" icon={FileText} href="/documents/get" color="red" />
                     </div>
                 </section>
 
@@ -65,7 +63,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
                         <div className="flex justify-between items-end mb-4 px-1">
                             <h2 className="text-lg font-bold text-slate-800">Prochain événement</h2>
                         </div>
-                        <div className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl p-5 text-white shadow-lg shadow-indigo-200 relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-orange-300 to-orange-600 rounded-lg p-5 text-white shadow-lg shadow-indigo-200 relative overflow-hidden">
                             <div className="relative z-10">
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="bg-white/20 backdrop-blur-md p-2 rounded-lg">

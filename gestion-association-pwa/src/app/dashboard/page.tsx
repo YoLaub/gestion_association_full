@@ -1,6 +1,4 @@
 /**
- * src/app/page.tsx
- * Point d'entrée Next.js.
  * Responsabilité : Injection de dépendances et Orchestration.
  */
 
@@ -17,4 +15,5 @@ export default async function Page() {
     const dashboardData = await useCase.execute();
 
     // 3. Rendu
-    return <DashboardView data={dashboardData} />;
+    return <DashboardView data={dashboardData}/>;
+}

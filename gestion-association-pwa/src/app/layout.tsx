@@ -1,8 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
-// src/app/layout.tsx
 import type { Metadata, Viewport } from "next"; // 1. Importer Viewport
 import "./globals.css";
-import Header from "@/shared/components/Header";
+import Header from "@/app/components/layout/Header";
 import { BottomNav } from "@/app/components/layout/BottomNav";
 
 // 2. Définir le Viewport SÉPARÉMENT
@@ -31,16 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
     return (
-        <ClerkProvider>
-            <html lang="fr">
-            <body className="bg-slate-50">
-            <Header/>
-            {children}
+       <ClerkProvider>
+         <html lang="fr">
+         <body className="bg-slate-50">
+         <Header/>
+         {children}
 
-            {/* 2. Ajouter la navigation en bas */}
-            <BottomNav/>
-            </body>
-            </html>
-        </ClerkProvider>
+         <BottomNav/>
+         </body>
+         </html>
+       </ClerkProvider>
     );
 };
