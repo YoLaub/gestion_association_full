@@ -1,4 +1,4 @@
-// src/app/layout.tsx
+import "reflect-metadata";
 import type {Metadata, Viewport} from "next"; // 1. Importer Viewport
 import "./globals.css";
 import {BottomNav} from "@/app/components/layout/BottomNav";
