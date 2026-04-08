@@ -20,10 +20,12 @@ model Profil {
   avatarUrl     String?
   createdAt     DateTime  @default(now())
 
-  roles              Role[]             @relation("ProfilRoles")
-  infoAdherent       InfoAdherent?
-  emergencyContacts  EmergencyContact[] @relation("ProfilEmergencyContacts")
-  addresses          Address[]          @relation("ProfilAddresses")
+  roles             Role[]             @relation("ProfilRoles")
+  infoAdherent      InfoAdherent?
+  emergencyContacts EmergencyContact[] @relation("ProfilEmergencyContacts")
+  addresses         Address[]          @relation("ProfilAddresses")
+  activity          ActivityProfil[]
+  createdActivities Activity[]         @relation("ActivityCreatedBy")
 }
 
 model Role {
@@ -59,4 +61,46 @@ model Address {
   city       String?
 
   profils Profil[] @relation("ProfilAddresses")
+}
+
+model Activity {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime? @db.Date
+  endDate     DateTime? @db.Date
+  startTime   DateTime? @db.Time
+  endTime     DateTime? @db.Time
+  wholeDay    Boolean?
+  place       String?
+  status      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  idResources String?
+  createdById String
+  eventTypeId String?
+
+  profils   ActivityProfil[]
+  createdBy Profil           @relation("ActivityCreatedBy", fields: [createdById], references: [id])
+  eventType EventType? @relation(fields: [eventTypeId], references: [id])
+}
+
+model ActivityProfil {
+  activityId String
+  profilId   String
+  status     String
+  createdAt  DateTime @default(now())
+
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  profil   Profil   @relation(fields: [profilId], references: [id], onDelete: Cascade)
+
+  @@id([activityId, profilId])
+}
+
+model EventType {
+  id String @id @default(cuid())
+  label String
+  colorCode String
+
+  activities Activity[]
 }
