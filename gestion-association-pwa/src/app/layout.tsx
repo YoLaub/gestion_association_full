@@ -1,36 +1,47 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import "reflect-metadata";
+import type {Metadata, Viewport} from "next"; // 1. Importer Viewport
 import "./globals.css";
+import {BottomNav} from "@/app/components/layout/BottomNav";
+import Header from "@/app/components/layout/Header";
+import {ClerkProvider} from "@clerk/nextjs";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// 2. Définir le Viewport SÉPARÉMENT
+export const viewport: Viewport = {
+    themeColor: "#000000", // La couleur de la barre de notif mobile
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false, // Important pour l'effet "app native"
+};
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata = {
-  title: "Mon App PWA",
-  manifest: "/manifest.json", // Très important
-  themeColor: "#000000",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+// 3. Nettoyer Metadata (plus de themeColor ici !)
+export const metadata: Metadata = {
+    title: "Gestion Association",
+    description: "Application de gestion pour associations",
+    manifest: "/manifest.webmanifest",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "default",
+        title: "GestAsso",
+    },
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+                                       children,
+                                   }: {
+    children: React.ReactNode;
+}) {
+    return (
+        <ClerkProvider>
+            <html lang="fr">
+            <body className="bg-slate-50">
+            <Header/>
+            {children}
+
+            {/* 2. Ajouter la navigation en bas */}
+            <BottomNav/>
+            </body>
+            </html>
+        </ClerkProvider>
+    );
 }

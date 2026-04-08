@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profil {
+  id            String    @id @default(cuid())
+  clerkId       String    @unique
+  firstName     String?
+  lastName      String?
+  email         String    @unique
+  birthday      DateTime?
+  phone         String?
+  isActive      Boolean   @default(true)
+  setInactiveAt DateTime?
+  avatarUrl     String?
+  createdAt     DateTime  @default(now())
+
+  roles              Role[]             @relation("ProfilRoles")
+  infoAdherent       InfoAdherent?
+  emergencyContacts  EmergencyContact[] @relation("ProfilEmergencyContacts")
+  addresses          Address[]          @relation("ProfilAddresses")
+}
+
+model Role {
+  id       String   @id @default(cuid())
+  roleName String   @unique
+  profils  Profil[] @relation("ProfilRoles")
+}
+
+model InfoAdherent {
+  id                String    @id @default(cuid())
+  medicalCertifDate DateTime?
+  licenseNumber     String?   @unique
+  licenseValidate   Boolean   @default(false)
+
+  profilId String @unique
+  profil   Profil @relation(fields: [profilId], references: [id], onDelete: Cascade)
+}
+
+model EmergencyContact {
+  id                    String @id @default(cuid())
+  emergencyContactName  String
+  emergencyContactPhone String
+
+  profils Profil[] @relation("ProfilEmergencyContacts")
+}
+
+model Address {
+  id         String  @id @default(cuid())
+  label      String?
+  street     String?
+  postalCode String?
+  country    String?
+  city       String?
+
+  profils Profil[] @relation("ProfilAddresses")
+}
