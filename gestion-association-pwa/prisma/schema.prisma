@@ -7,6 +7,8 @@ datasource db {
   provider = "postgresql"
 }
 
+// --- SOCLE USER (Existant) ---
+
 model Profil {
   id            String    @id @default(cuid())
   clerkId       String    @unique
@@ -20,10 +22,15 @@ model Profil {
   avatarUrl     String?
   createdAt     DateTime  @default(now())
 
-  roles              Role[]             @relation("ProfilRoles")
-  infoAdherent       InfoAdherent?
-  emergencyContacts  EmergencyContact[] @relation("ProfilEmergencyContacts")
-  addresses          Address[]          @relation("ProfilAddresses")
+  // Relations existantes
+  roles             Role[]             @relation("ProfilRoles")
+  infoAdherent      InfoAdherent?
+  emergencyContacts EmergencyContact[] @relation("ProfilEmergencyContacts")
+  addresses         Address[]          @relation("ProfilAddresses")
+
+  // --- NOUVELLE RELATION AGENDA ---
+  // Un profil peut organiser plusieurs activités
+  organizedActivities Activity[] @relation("ActivityOrganizer")
 }
 
 model Role {
@@ -59,4 +66,71 @@ model Address {
   city       String?
 
   profils Profil[] @relation("ProfilAddresses")
+}
+
+// ==========================================
+//           MODULE AGENDA (Nouveau)
+// ==========================================
+
+model Location {
+  id            String     @id @default(cuid())
+  name          String
+  address       String?
+  googleMapLink String?
+  activities    Activity[]
+}
+
+model EventType {
+  id         String     @id @default(cuid())
+  label      String
+  colorCode  String // Utile pour FullCalendar
+  activities Activity[]
+}
+
+// La table Mère (Activity) qui rassemble Cours et Événements
+model Activity {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime // J'ai renommé start -> startDate pour être explicite
+  endDate     DateTime
+  isWholeDay  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Clés étrangères
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
+
+  typeId String?
+  type   EventType? @relation(fields: [typeId], references: [id])
+
+  // Relations "Héritage" (Optionnelles)
+  courseDetail Course?
+  eventDetail  Event?
+
+  // Relation Many-to-Many avec Profil (les organisateurs)
+  organizers Profil[] @relation("ActivityOrganizer")
+}
+
+// Table Fille 1 : Cours
+model Course {
+  id      String  @id @default(cuid())
+  level   String?
+  comment String?
+
+  // Lien 1-1 avec Activity
+  activityId String   @unique
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+}
+
+// Table Fille 2 : Événement Ponctuel
+model Event {
+  id         String  @id @default(cuid())
+  capacity   Int?
+  visibility String? // "PUBLIC", "PRIVATE"
+
+  // Lien 1-1 avec Activity
+  activityId String   @unique
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
