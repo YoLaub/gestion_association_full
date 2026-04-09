@@ -1,14 +1,26 @@
-import { SignOutButton } from "@clerk/nextjs";
+// src/app/page.tsx
+import { auth } from "@clerk/nextjs/server";
+import { RedirectToSignIn } from "@clerk/nextjs";
 
-export default function Home() {
+// Clean Architecture imports
+import { DashboardView } from "@/features/dashboard/presentation/components/DashboardView";
+import {makeGetDashboardDataUseCase} from "@/features/dashboard/main";
+
+export default async function HomePage() {
+  // 1. Sécurité : Vérification Clerk (Côté Serveur)
+  const { userId } = await auth();
+
+  if (!userId) {
+    // Si pas connecté, on renvoie vers le login (ou on affiche une Landing Page)
+    return <RedirectToSignIn />;
+  }
+
+  const dashboardData = await makeGetDashboardDataUseCase().execute();
+
+  // 4. Rendu
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <SignOutButton>
-          <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-            Sign Out
-          </button>
-        </SignOutButton>
-      <h1 className="text-2xl font-bold">Bienvenue dans Mon App PWA</h1>
-    </main>
+      <main>
+        <DashboardView data={dashboardData} />
+      </main>
   );
 }
