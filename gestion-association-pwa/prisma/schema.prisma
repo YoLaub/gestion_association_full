@@ -26,6 +26,7 @@ model Profil {
   addresses         Address[]          @relation("ProfilAddresses")
   activity          ActivityProfil[]
   createdActivities Activity[]         @relation("ActivityCreatedBy")
+  tasks             Tasks[]            @relation("ProfilTasks")
 }
 
 model Role {
@@ -82,7 +83,10 @@ model Activity {
 
   profils   ActivityProfil[]
   createdBy Profil           @relation("ActivityCreatedBy", fields: [createdById], references: [id])
-  eventType EventType? @relation(fields: [eventTypeId], references: [id])
+  eventType EventType?       @relation(fields: [eventTypeId], references: [id])
+  location  Location[]       @relation("ActivityLocation")
+  course    course?
+  event     Event?
 }
 
 model ActivityProfil {
@@ -91,16 +95,62 @@ model ActivityProfil {
   status     String
   createdAt  DateTime @default(now())
 
-  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  profil   Profil   @relation(fields: [profilId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id])
+  profil   Profil   @relation(fields: [profilId], references: [id])
 
   @@id([activityId, profilId])
 }
 
 model EventType {
-  id String @id @default(cuid())
-  label String
+  id        String @id @default(cuid())
+  label     String
   colorCode String
 
   activities Activity[]
 }
+
+model Location {
+  id            String  @id @default(cuid())
+  name          String
+  address       String
+  googleMapLink String?
+
+  activity Activity[] @relation("ActivityLocation")
+}
+
+model course {
+  id         String  @id @default(cuid())
+  level      String
+  comment    String? @db.Text
+  activityId String  @unique
+
+  activity Activity @relation(fields: [activityId], references: [id])
+}
+
+model Event {
+  id         String  @id @default(cuid())
+  capacity   Int?
+  visibility Boolean
+  activityId String  @unique
+
+  activity Activity @relation(fields: [activityId], references: [id])
+  tasks    Tasks[]
+}
+
+model Tasks {
+  id          String    @id @default(cuid())
+  title       String
+  startDate   DateTime?
+  endDate     DateTime?
+  status      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  description String?
+  comment     String?   @db.Text
+  eventId     String
+
+  event  Event    @relation(fields: [eventId], references: [id])
+  profil Profil[] @relation("ProfilTasks")
+}
+
+// TODO Voir pour taskPosition et sa cardinalité
