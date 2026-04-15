@@ -26,7 +26,7 @@ model Profil {
   addresses         Address[]          @relation("ProfilAddresses")
   activity          ActivityProfil[]
   createdActivities Activity[]         @relation("ActivityCreatedBy")
-  tasks             Tasks[]            @relation("ProfilTasks")
+  tasks             Task[]             @relation("ProfilTask")
 }
 
 model Role {
@@ -66,7 +66,7 @@ model Address {
 
 model Activity {
   id          String    @id @default(cuid())
-  title       String
+  title       String    @db.VarChar(120)
   description String?
   startDate   DateTime? @db.Date
   endDate     DateTime? @db.Date
@@ -77,22 +77,22 @@ model Activity {
   status      String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  idResources String?
-  createdById String
-  eventTypeId String?
+  idResources String?   @db.VarChar(180)
+  createdById String    @db.VarChar(180)
+  eventTypeId String?   @db.VarChar(180)
 
   profils   ActivityProfil[]
   createdBy Profil           @relation("ActivityCreatedBy", fields: [createdById], references: [id])
   eventType EventType?       @relation(fields: [eventTypeId], references: [id])
   location  Location[]       @relation("ActivityLocation")
-  course    course?
+  course    Course?
   event     Event?
 }
 
 model ActivityProfil {
-  activityId String
-  profilId   String
-  status     String
+  activityId String   @db.VarChar(180)
+  profilId   String   @db.VarChar(180)
+  status     String   @db.VarChar(50)
   createdAt  DateTime @default(now())
 
   activity Activity @relation(fields: [activityId], references: [id])
@@ -103,8 +103,8 @@ model ActivityProfil {
 
 model EventType {
   id        String @id @default(cuid())
-  label     String
-  colorCode String
+  label     String @db.VarChar(50)
+  colorCode String @db.VarChar(20)
 
   activities Activity[]
 }
@@ -118,9 +118,9 @@ model Location {
   activity Activity[] @relation("ActivityLocation")
 }
 
-model course {
+model Course {
   id         String  @id @default(cuid())
-  level      String
+  level      String  @db.VarChar(30)
   comment    String? @db.Text
   activityId String  @unique
 
@@ -139,10 +139,10 @@ model Event {
 
 model Task {
   id          String    @id @default(cuid())
-  title       String
+  title       String    @db.VarChar(120)
   startDate   DateTime?
   endDate     DateTime?
-  status      String
+  status      String    @db.VarChar(40)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   description String?
@@ -150,8 +150,8 @@ model Task {
   position    Int
   columnId    String
 
-  profils Profil[] @relation("ProfilTasks")
-  column Column   @relation(fields: [columnId], references: [id])
+  profils Profil[] @relation("ProfilTask")
+  column  Column   @relation(fields: [columnId], references: [id])
 
   @@unique([columnId, position])
   @@index([columnId])
@@ -159,7 +159,7 @@ model Task {
 
 model Board {
   id      String @id @default(cuid())
-  title   String
+  title   String @db.VarChar(120)
   eventId String @unique
 
   event   Event    @relation(fields: [eventId], references: [id])
@@ -168,11 +168,11 @@ model Board {
 
 model Column {
   id       String @id @default(cuid())
-  title    String
+  title    String @db.VarChar(120)
   position Int
-  boardId  String
+  boardId  String 
 
-  board Board   @relation(fields: [boardId], references: [id])
+  board Board  @relation(fields: [boardId], references: [id])
   tasks Task[]
 
   @@unique([boardId, position])
