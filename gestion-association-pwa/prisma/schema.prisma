@@ -134,10 +134,10 @@ model Event {
   activityId String  @unique
 
   activity Activity @relation(fields: [activityId], references: [id])
-  tasks    Tasks[]
+  board    Board?
 }
 
-model Tasks {
+model Task {
   id          String    @id @default(cuid())
   title       String
   startDate   DateTime?
@@ -147,10 +147,34 @@ model Tasks {
   updatedAt   DateTime  @updatedAt
   description String?
   comment     String?   @db.Text
-  eventId     String
+  position    Int
+  columnId    String
 
-  event  Event    @relation(fields: [eventId], references: [id])
-  profil Profil[] @relation("ProfilTasks")
+  profils Profil[] @relation("ProfilTasks")
+  column Column   @relation(fields: [columnId], references: [id])
+
+  @@unique([columnId, position])
+  @@index([columnId])
 }
 
-// TODO Voir pour taskPosition et sa cardinalité
+model Board {
+  id      String @id @default(cuid())
+  title   String
+  eventId String @unique
+
+  event   Event    @relation(fields: [eventId], references: [id])
+  columns Column[]
+}
+
+model Column {
+  id       String @id @default(cuid())
+  title    String
+  position Int
+  boardId  String
+
+  board Board   @relation(fields: [boardId], references: [id])
+  tasks Task[]
+
+  @@unique([boardId, position])
+  @@index([boardId])
+}
