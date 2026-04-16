@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15             # On utilise la version 15 (stable et standard)
+    container_name: asso_postgres  # Le petit nom du conteneur pour le retrouver facilement
+    restart: always                # Si ton PC redémarre, la BDD redémarre toute seule
+    ports:
+      - "5432:5432"                # Port PC : Port Conteneur
+    environment:
+      POSTGRES_USER: admin         # Ton identifiant
+      POSTGRES_PASSWORD: admin     # Ton mot de passe (simple pour le dev)
+      POSTGRES_DB: asso_db         # Le nom de ta base de données
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Pour ne pas perdre tes données si tu éteins Docker !
+
+volumes:
+  postgres_data:
