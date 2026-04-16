@@ -80,11 +80,11 @@ model Activity {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   idResources String?
-  createdById String
+  createdById String?
   eventTypeId String?
 
   profils   ActivityProfil[]
-  createdBy Profil           @relation("ActivityCreatedBy", fields: [createdById], references: [id])
+  createdBy Profil?          @relation("ActivityCreatedBy", fields: [createdById], references: [id])
   eventType EventType?       @relation(fields: [eventTypeId], references: [id])
   location  Location[]       @relation("ActivityLocation")
   course    course?
