@@ -6,4 +6,5 @@ export interface TaskRepository {
     create(data: Omit<Task, 'id'>): Promise<Task>
     save(task: Task): Promise<void>
     delete(id: string): Promise<void>
+    move(id: string, position: number, columnId: string): Promise<void>
 }

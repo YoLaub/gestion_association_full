@@ -1,40 +1,46 @@
-import { PrismaClient } from "@prisma/client/extension";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repositories/Task.repository";
-import type { TaskModel } from "@/generated/prisma/models/Task"
+import type { TaskModel } from "@/generated/prisma/models/Task";
+import { prisma } from "@/lib/prisma";
 
 export class PrismaTaskRepository implements TaskRepository {
 
-    constructor(private prisma: PrismaClient) { }
 
     async findById(id: string): Promise<Task | null> {
-        const row = await this.prisma.task.findUnique({ where: { id } });
+        const row = await prisma.task.findUnique({ where: { id } });
 
         if (!row) return null;
         return this.toDomainEntity(row);
     }
 
     async findByColumn(columnId: string): Promise<Task[]> {
-        const rows = await this.prisma.task.findMany({ where: { columnId } });
+        const rows = await prisma.task.findMany({ where: { columnId } });
 
         return rows.map((row: TaskModel) => this.toDomainEntity(row));
     }
 
     async create(data: Omit<Task, "id">): Promise<Task> {
-        const row = await this.prisma.task.create({ data });
+        const row = await prisma.task.create({ data });
 
         return this.toDomainEntity(row);
     }
 
     async save(task: Task): Promise<void> {
-        await this.prisma.task.update({
+        await prisma.task.update({
             where: { id: task.id },
             data: task,
         })
     }
 
     async delete(id: string): Promise<void> {
-        await this.prisma.task.delete({ where: { id } })
+        await prisma.task.delete({ where: { id } })
+    }
+
+    async move(id: string, position: number, columnId: string): Promise<void> {
+        await prisma.task.update({
+            where: { id },
+            data: { position, columnId }
+        });
     }
 
     private toDomainEntity(row: TaskModel): Task {
