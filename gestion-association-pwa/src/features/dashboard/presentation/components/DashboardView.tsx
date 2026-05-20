@@ -1,82 +1,68 @@
 import React from 'react';
-import {
-    Calendar,
-    Bell,
-    Users,
-    Store,
-    FileText,
-    type LucideIcon
-} from "lucide-react";
-
-import Link from "next/link";
-import { StatCard } from "./StatCard";
-import { ActionButton } from "./ActionButton";
-import { DashboardData, StatColor } from "../../domain/entities/DashboardData";
-
-
+import { Calendar, Users, Store, FileText } from 'lucide-react';
+import { StatCard } from './StatCard';
+import { ActionButton } from './ActionButton';
+import { DashboardTopBarClient } from './DashboardTopBarClient';
+import { DashboardData } from '../../domain/entities/DashboardData';
+import s from './DashboardView.module.css';
 
 export function DashboardView({ data }: { data: DashboardData }) {
     if (!data) return null;
 
     return (
-        <main className="min-h-screen bg-slate-50 pb-24 text-slate-900 font-sans">
-            {/* Header */}
-            <header className="bg-white px-6 pt-12 pb-6 rounded-b-[1rem] shadow-sm sticky top-0 z-10">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <p className="text-slate-500 text-sm font-medium mb-0.5">Bonjour,</p>
-                        <h1 className="text-2xl font-extrabold text-slate-900">{data.user.name} 👋</h1>
-                    </div>
-                    <button className="p-2.5 bg-slate-100 rounded-full text-slate-600 relative">
-                        <Bell size={20} />
-                        {data.user.hasNotifications && (
-                            <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-700 rounded-full border border-white"></span>
-                        )}
-                    </button>
-                </div>
-            </header>
+        <main className={s.screen}>
 
-            <div className="px-5 space-y-8 mt-6">
-                {/* Stats */}
-                <section className="flex gap-4 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
+            {/* Top bar */}
+            <div className={s.topBar}>
+                <div className={s.logo}>
+                    <span className={s.logoGlyph}>A</span>
+                    <span className={s.logoName}>Asso360</span>
+                    <span className={s.logoSub}>/sport</span>
+                </div>
+                <DashboardTopBarClient hasNotifications={data.user.hasNotifications} />
+            </div>
+
+            {/* Content */}
+            <div className={s.content}>
+
+                <div className={s.greeting}>
+                    <p className={s.eyebrow}>Tableau de bord</p>
+                    <h1 className={s.displayTitle}>Bonjour, {data.user.name}</h1>
+                </div>
+
+                <div className={s.statsRow}>
                     {data.stats.map((stat, idx) => (
                         <StatCard key={idx} {...stat} />
                     ))}
-                </section>
+                </div>
 
-                {/* Actions Rapides */}
-                <section>
-                    <div className="flex justify-between items-end mb-4 px-1">
-                        <h2 className="text-lg font-bold text-slate-800">Actions rapides</h2>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <ActionButton label="Mon Profil" icon={Users} href="/members/add" color="red" />
-                        <ActionButton label="Mes Événement" icon={Calendar} href="/events/get" color="orange" />
-                        <ActionButton label="Ma Boutique" icon={Store} href="/boutique/get" color="orange" />
-                        <ActionButton label="Mes documents" icon={FileText} href="/documents/get" color="red" />
+                <section className={s.section}>
+                    <p className={s.sectionLabel}>Actions rapides</p>
+                    <div className={s.actionsGrid}>
+                        <ActionButton label="Mon Profil"      icon={Users}    href="/members/add"   />
+                        <ActionButton label="Mes Événements"  icon={Calendar} href="/events/get"    />
+                        <ActionButton label="Ma Boutique"     icon={Store}    href="/boutique/get"  />
+                        <ActionButton label="Mes Documents"   icon={FileText} href="/documents/get" />
                     </div>
                 </section>
 
-                {/* Upcoming Event */}
                 {data.upcomingEventTitle && (
-                    <section>
-                        <div className="flex justify-between items-end mb-4 px-1">
-                            <h2 className="text-lg font-bold text-slate-800">Prochain événement</h2>
-                        </div>
-                        <div className="bg-gradient-to-br from-orange-300 to-orange-600 rounded-lg p-5 text-white shadow-lg shadow-indigo-200 relative overflow-hidden">
-                            <div className="relative z-10">
-                                <div className="flex items-start justify-between mb-4">
-                                    <div className="bg-white/20 backdrop-blur-md p-2 rounded-lg">
-                                        <Calendar className="text-white" size={24} />
-                                    </div>
-                                </div>
-                                <h3 className="text-lg font-bold mb-1">{data.upcomingEventTitle}</h3>
-                                <p className="text-indigo-100 text-sm">{data.upcomingEventDate}</p>
+                    <section className={s.section}>
+                        <p className={s.sectionLabel}>Prochain événement</p>
+                        <div className={s.eventCard}>
+                            <div className={s.eventIconWrap}>
+                                <Calendar size={18} strokeWidth={1.6} />
                             </div>
+                            <div className={s.eventBody}>
+                                <p className={s.eventTitle}>{data.upcomingEventTitle}</p>
+                                <p className={s.eventDate}>{data.upcomingEventDate}</p>
+                            </div>
+                            <span className={s.eventChip}>À venir</span>
                         </div>
                     </section>
                 )}
             </div>
+
         </main>
     );
 }

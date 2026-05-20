@@ -1,8 +1,7 @@
 import "reflect-metadata";
-import type { Metadata, Viewport } from "next"; // 1. Importer Viewport
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { BottomNav } from "@/app/components/layout/BottomNav";
-import Header from "@/app/components/layout/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 
 // 2. Définir le Viewport SÉPARÉMENT
@@ -35,7 +34,6 @@ export default function RootLayout({
             <ClerkProvider>
                 <html lang="fr">
                     <body className="bg-slate-50">
-                        <Header />
                         {children}
 
                         {/* 2. Ajouter la navigation en bas */}

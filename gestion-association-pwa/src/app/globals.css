@@ -5,6 +5,31 @@
   --foreground: #171717;
   --sat: env(safe-area-inset-top);
   --sab: env(safe-area-inset-bottom);
+
+  /* Asso360 — dark (default) */
+  --bg-0: #0a0b0e;
+  --bg-1: #14161b;
+  --bg-2: #1b1e25;
+  --bg-3: #232631;
+  --fg-0: #f3f4f7;
+  --fg-1: #c9ccd4;
+  --fg-2: #888c98;
+  --fg-3: #5a5e6b;
+  --line: rgba(255,255,255,0.07);
+  --line-strong: rgba(255,255,255,0.14);
+  --accent: #c8ff00;
+  --accent-ink: #0a0b0e;
+  --accent-soft: rgba(200,255,0,0.14);
+  --danger: #ff5470;
+  --warn: #ffb547;
+  --ok: #45e6a8;
+  --info: #6cb6ff;
+  --r-sm: 2.5px;
+  --r-md: 5px;
+  --r-lg: 7px;
+  --r-xl: 9px;
+  --r-pill: 999px;
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.04) inset, 0 12px 32px -16px rgba(0,0,0,0.6);
 }
 
 @theme inline {
