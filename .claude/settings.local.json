@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "expo@expo-plugins": true,
+    "expo-app-design@expo-plugins": true,
+    "expo-deployment@expo-plugins": true
+  }
+}
